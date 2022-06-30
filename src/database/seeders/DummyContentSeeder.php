@@ -58,8 +58,8 @@ class DummyContentSeeder extends Seeder
         // $largeBook->shelves()->attach($shelves->pluck('id'));
 
         // Assign API permission to editor role and create an API key
-        $apiPermission = RolePermission::getByName('access-api');
-        $editorRole->attachPermission($apiPermission);
+        // $apiPermission = RolePermission::getByName('access-api');
+        // $editorRole->attachPermission($apiPermission);
         // $token = (new ApiToken())->forceFill([
         //     'user_id'    => $editorUser->id,
         //     'name'       => 'Testing API key',

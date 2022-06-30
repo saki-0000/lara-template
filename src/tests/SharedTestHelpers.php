@@ -25,7 +25,6 @@ trait SharedTestHelpers
     {
         if (is_null($this->admin)) {
             $adminRole = Role::getSystemRole('admin');
-            dump($adminRole);
             $this->admin = $adminRole->users->first();
         }
 

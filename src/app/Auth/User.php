@@ -42,7 +42,7 @@ use Illuminate\Support\Collection;
  * @property Collection $roles
  * @property Collection $mfaValues
  */
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, Sluggable
 {
     use HasFactory;
     use Authenticatable;
@@ -101,13 +101,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //     return static::$defaultUser;
     // }
 
-    // /**
-    //  * Check if the user is the default public user.
-    //  */
-    // public function isDefault(): bool
-    // {
-    //     return $this->system_name === 'public';
-    // }
+    /**
+     * Check if the user is the default public user.
+     */
+    public function isDefault(): bool
+    {
+        return $this->system_name === 'public';
+    }
 
     /**
      * The roles that belong to the user.
@@ -131,13 +131,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //     return $this->roles->pluck('id')->contains($roleId);
     // }
 
-    // /**
-    //  * Check if the user has a role.
-    //  */
-    // public function hasSystemRole(string $roleSystemName): bool
-    // {
-    //     return $this->roles->pluck('system_name')->contains($roleSystemName);
-    // }
+    /**
+     * Check if the user has a role.
+     */
+    public function hasSystemRole(string $roleSystemName): bool
+    {
+        return $this->roles->pluck('system_name')->contains($roleSystemName);
+    }
 
     // /**
     //  * Attach the default system role to this user.
@@ -150,36 +150,36 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //     }
     // }
 
-    // /**
-    //  * Check if the user has a particular permission.
-    //  */
-    // public function can(string $permissionName): bool
-    // {
-    //     if ($this->email === 'guest') {
-    //         return false;
-    //     }
+    /**
+     * Check if the user has a particular permission.
+     */
+    public function can(string $permissionName): bool
+    {
+        if ($this->email === 'guest') {
+            return false;
+        }
 
-    //     return $this->permissions()->contains($permissionName);
-    // }
+        return $this->permissions()->contains($permissionName);
+    }
 
-    // /**
-    //  * Get all permissions belonging to a the current user.
-    //  */
-    // protected function permissions(): Collection
-    // {
-    //     if (isset($this->permissions)) {
-    //         return $this->permissions;
-    //     }
+    /**
+     * Get all permissions belonging to a the current user.
+     */
+    protected function permissions(): Collection
+    {
+        if (isset($this->permissions)) {
+            return $this->permissions;
+        }
 
-    //     $this->permissions = $this->newQuery()->getConnection()->table('role_user', 'ru')
-    //         ->select('role_permissions.name as name')->distinct()
-    //         ->leftJoin('permission_role', 'ru.role_id', '=', 'permission_role.role_id')
-    //         ->leftJoin('role_permissions', 'permission_role.permission_id', '=', 'role_permissions.id')
-    //         ->where('ru.user_id', '=', $this->id)
-    //         ->pluck('name');
+        $this->permissions = $this->newQuery()->getConnection()->table('role_user', 'ru')
+            ->select('role_permissions.name as name')->distinct()
+            ->leftJoin('permission_role', 'ru.role_id', '=', 'permission_role.role_id')
+            ->leftJoin('role_permissions', 'permission_role.permission_id', '=', 'role_permissions.id')
+            ->where('ru.user_id', '=', $this->id)
+            ->pluck('name');
 
-    //     return $this->permissions;
-    // }
+        return $this->permissions;
+    }
 
     // /**
     //  * Clear any cached permissions on this instance.
@@ -222,25 +222,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //     return $this->socialAccounts()->where('driver', '=', $socialDriver)->exists();
     // }
 
-    // /**
-    //  * Returns a URL to the user's avatar.
-    //  */
-    // public function getAvatar(int $size = 50): string
-    // {
-    //     $default = url('/user_avatar.png');
-    //     $imageId = $this->image_id;
-    //     if ($imageId === 0 || $imageId === '0' || $imageId === null) {
-    //         return $default;
-    //     }
+    /**
+     * Returns a URL to the user's avatar.
+     */
+    public function getAvatar(int $size = 50): string
+    {
+        $default = url('/user_avatar.png');
+        $imageId = $this->image_id;
+        if ($imageId === 0 || $imageId === '0' || $imageId === null) {
+            return $default;
+        }
 
-    //     try {
-    //         $avatar = $this->avatar ? url($this->avatar->getThumb($size, $size, false)) : $default;
-    //     } catch (Exception $err) {
-    //         $avatar = $default;
-    //     }
+        try {
+            $avatar = $this->avatar ? url($this->avatar->getThumb($size, $size, false)) : $default;
+        } catch (Exception $err) {
+            $avatar = $default;
+        }
 
-    //     return $avatar;
-    // }
+        return $avatar;
+    }
 
     // /**
     //  * Get the avatar for the user.
@@ -287,23 +287,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //         }, 'activities', 'users.id', '=', 'activities.user_id');
     // }
 
-    // /**
-    //  * Get the url for editing this user.
-    //  */
-    // public function getEditUrl(string $path = ''): string
-    // {
-    //     $uri = '/settings/users/' . $this->id . '/' . trim($path, '/');
+    /**
+     * Get the url for editing this user.
+     */
+    public function getEditUrl(string $path = ''): string
+    {
+        $uri = '/settings/users/' . $this->id . '/' . trim($path, '/');
 
-    //     return url(rtrim($uri, '/'));
-    // }
+        return url(rtrim($uri, '/'));
+    }
 
-    // /**
-    //  * Get the url that links to this user's profile.
-    //  */
-    // public function getProfileUrl(): string
-    // {
-    //     return url('/user/' . $this->slug);
-    // }
+    /**
+     * Get the url that links to this user's profile.
+     */
+    public function getProfileUrl(): string
+    {
+        return url('/user/' . $this->slug);
+    }
 
     // /**
     //  * Get a shortened version of the user's name.
@@ -342,13 +342,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     //     return "({$this->id}) {$this->name}";
     // }
 
-    // /**
-    //  * {@inheritdoc}
-    //  */
-    // public function refreshSlug(): string
-    // {
-    //     $this->slug = app(SlugGenerator::class)->generate($this);
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshSlug(): string
+    {
+        $this->slug = app(SlugGenerator::class)->generate($this);
 
-    //     return $this->slug;
-    // }
+        return $this->slug;
+    }
 }
