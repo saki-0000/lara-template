@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePasswordResetsTable extends Migration
+class AddPageRevisionTypes extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,9 @@ class CreatePasswordResetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token')->index();
-            $table->timestamp('created_at');
+        Schema::table('page_revisions', function (Blueprint $table) {
+            $table->string('type')->default('version');
+            $table->index('type');
         });
     }
 
@@ -26,6 +25,8 @@ class CreatePasswordResetsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('password_resets');
+        Schema::table('page_revisions', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 }
