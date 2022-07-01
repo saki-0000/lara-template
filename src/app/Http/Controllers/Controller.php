@@ -170,13 +170,13 @@ class Controller extends BaseController
     //     ]);
     // }
 
-    // /**
-    //  * Show a positive, successful notification to the user on next view load.
-    //  */
-    // protected function showSuccessNotification(string $message): void
-    // {
-    //     session()->flash('success', $message);
-    // }
+    /**
+     * Show a positive, successful notification to the user on next view load.
+     */
+    protected function showSuccessNotification(string $message): void
+    {
+        session()->flash('success', $message);
+    }
 
     // /**
     //  * Show a warning notification to the user on next view load.

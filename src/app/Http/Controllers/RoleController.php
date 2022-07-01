@@ -68,85 +68,85 @@ class RoleController extends Controller
         ]);
 
         $this->permissionsRepo->saveNewRole($request->all());
-        // $this->showSuccessNotification(trans('settings.role_create_success'));
+        $this->showSuccessNotification(trans('settings.role_create_success'));
 
         return redirect('/settings/roles');
     }
 
-    // /**
-    //  * Show the form for editing a user role.
-    //  *
-    //  * @throws PermissionsException
-    //  */
-    // public function edit(string $id)
-    // {
-    //     $this->checkPermission('user-roles-manage');
-    //     $role = $this->permissionsRepo->getRoleById($id);
-    //     if ($role->hidden) {
-    //         throw new PermissionsException(trans('errors.role_cannot_be_edited'));
-    //     }
+    /**
+     * Show the form for editing a user role.
+     *
+     * @throws PermissionsException
+     */
+    public function edit(string $id)
+    {
+        $this->checkPermission('user-roles-manage');
+        $role = $this->permissionsRepo->getRoleById($id);
+        if ($role->hidden) {
+            throw new PermissionsException(trans('errors.role_cannot_be_edited'));
+        }
 
-    //     $this->setPageTitle(trans('settings.role_edit'));
+        $this->setPageTitle(trans('settings.role_edit'));
 
-    //     return view('settings.roles.edit', ['role' => $role]);
-    // }
+        return view('settings.roles.edit', ['role' => $role]);
+    }
 
-    // /**
-    //  * Updates a user role.
-    //  *
-    //  * @throws ValidationException
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     $this->checkPermission('user-roles-manage');
-    //     $this->validate($request, [
-    //         'display_name' => ['required', 'min:3', 'max:180'],
-    //         'description'  => ['max:180'],
-    //     ]);
+    /**
+     * Updates a user role.
+     *
+     * @throws ValidationException
+     */
+    public function update(Request $request, string $id)
+    {
+        $this->checkPermission('user-roles-manage');
+        $this->validate($request, [
+            'display_name' => ['required', 'min:3', 'max:180'],
+            'description'  => ['max:180'],
+        ]);
 
-    //     $this->permissionsRepo->updateRole($id, $request->all());
-    //     $this->showSuccessNotification(trans('settings.role_update_success'));
+        $this->permissionsRepo->updateRole($id, $request->all());
+        $this->showSuccessNotification(trans('settings.role_update_success'));
 
-    //     return redirect('/settings/roles');
-    // }
+        return redirect('/settings/roles');
+    }
 
-    // /**
-    //  * Show the view to delete a role.
-    //  * Offers the chance to migrate users.
-    //  */
-    // public function showDelete(string $id)
-    // {
-    //     $this->checkPermission('user-roles-manage');
-    //     $role = $this->permissionsRepo->getRoleById($id);
-    //     $roles = $this->permissionsRepo->getAllRolesExcept($role);
-    //     $blankRole = $role->newInstance(['display_name' => trans('settings.role_delete_no_migration')]);
-    //     $roles->prepend($blankRole);
+    /**
+     * Show the view to delete a role.
+     * Offers the chance to migrate users.
+     */
+    public function showDelete(string $id)
+    {
+        $this->checkPermission('user-roles-manage');
+        $role = $this->permissionsRepo->getRoleById($id);
+        $roles = $this->permissionsRepo->getAllRolesExcept($role);
+        $blankRole = $role->newInstance(['display_name' => trans('settings.role_delete_no_migration')]);
+        $roles->prepend($blankRole);
 
-    //     $this->setPageTitle(trans('settings.role_delete'));
+        $this->setPageTitle(trans('settings.role_delete'));
 
-    //     return view('settings.roles.delete', ['role' => $role, 'roles' => $roles]);
-    // }
+        return view('settings.roles.delete', ['role' => $role, 'roles' => $roles]);
+    }
 
-    // /**
-    //  * Delete a role from the system,
-    //  * Migrate from a previous role if set.
-    //  *
-    //  * @throws Exception
-    //  */
-    // public function delete(Request $request, string $id)
-    // {
-    //     $this->checkPermission('user-roles-manage');
+    /**
+     * Delete a role from the system,
+     * Migrate from a previous role if set.
+     *
+     * @throws Exception
+     */
+    public function delete(Request $request, string $id)
+    {
+        $this->checkPermission('user-roles-manage');
 
-    //     try {
-    //         $this->permissionsRepo->deleteRole($id, $request->get('migrate_role_id'));
-    //     } catch (PermissionsException $e) {
-    //         $this->showErrorNotification($e->getMessage());
+        try {
+            $this->permissionsRepo->deleteRole($id, $request->get('migrate_role_id'));
+        } catch (PermissionsException $e) {
+            $this->showErrorNotification($e->getMessage());
 
-    //         return redirect()->back();
-    //     }
+            return redirect()->back();
+        }
 
-    //     $this->showSuccessNotification(trans('settings.role_delete_success'));
+        $this->showSuccessNotification(trans('settings.role_delete_success'));
 
-    //     return redirect('/settings/roles');
-    // }
+        return redirect('/settings/roles');
+    }
 }

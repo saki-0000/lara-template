@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Settings text strings
- * Contains all text strings used in the general settings sections of BookStack
+ * Contains all text strings used in the general settings sections of App
  * including users and roles.
  */
 return [
@@ -20,7 +21,7 @@ return [
     'app_name_desc' => 'This name is shown in the header and in any system-sent emails.',
     'app_name_header' => 'Show name in header',
     'app_public_access' => 'Public Access',
-    'app_public_access_desc' => 'Enabling this option will allow visitors, that are not logged-in, to access content in your BookStack instance.',
+    'app_public_access_desc' => 'Enabling this option will allow visitors, that are not logged-in, to access content in your App instance.',
     'app_public_access_desc_guest' => 'Access for public visitors can be controlled through the "Guest" user.',
     'app_public_access_toggle' => 'Allow public access',
     'app_public_viewing' => 'Allow public viewing?',

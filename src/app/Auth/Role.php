@@ -57,20 +57,20 @@ class Role extends Model
         return $this->belongsToMany(RolePermission::class, 'permission_role', 'role_id', 'permission_id');
     }
 
-    // /**
-    //  * Check if this role has a permission.
-    //  */
-    // public function hasPermission(string $permissionName): bool
-    // {
-    //     $permissions = $this->getRelationValue('permissions');
-    //     foreach ($permissions as $permission) {
-    //         if ($permission->getRawAttribute('name') === $permissionName) {
-    //             return true;
-    //         }
-    //     }
+    /**
+     * Check if this role has a permission.
+     */
+    public function hasPermission(string $permissionName): bool
+    {
+        $permissions = $this->getRelationValue('permissions');
+        foreach ($permissions as $permission) {
+            if ($permission->getRawAttribute('name') === $permissionName) {
+                return true;
+            }
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 
     /**
      * Add a permission to this role.

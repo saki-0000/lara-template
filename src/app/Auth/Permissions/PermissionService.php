@@ -241,46 +241,46 @@ class PermissionService
     //     $this->createManyJointPermissions($entities, $roles);
     // }
 
-    // /**
-    //  * Build the entity jointPermissions for a particular role.
-    //  */
-    // public function buildJointPermissionForRole(Role $role)
-    // {
-    //     $roles = [$role];
-    //     $this->deleteManyJointPermissionsForRoles($roles);
+    /**
+     * Build the entity jointPermissions for a particular role.
+     */
+    public function buildJointPermissionForRole(Role $role)
+    {
+        $roles = [$role];
+        $this->deleteManyJointPermissionsForRoles($roles);
 
-    //     // Chunk through all books
-    //     $this->bookFetchQuery()->chunk(20, function ($books) use ($roles) {
-    //         $this->buildJointPermissionsForBooks($books, $roles);
-    //     });
+        // Chunk through all books
+        // $this->bookFetchQuery()->chunk(20, function ($books) use ($roles) {
+        //     $this->buildJointPermissionsForBooks($books, $roles);
+        // });
 
-    //     // Chunk through all bookshelves
-    //     Bookshelf::query()->select(['id', 'restricted', 'owned_by'])
-    //         ->chunk(50, function ($shelves) use ($roles) {
-    //             $this->buildJointPermissionsForShelves($shelves, $roles);
-    //         });
-    // }
+        // Chunk through all bookshelves
+        // Bookshelf::query()->select(['id', 'restricted', 'owned_by'])
+        //     ->chunk(50, function ($shelves) use ($roles) {
+        //         $this->buildJointPermissionsForShelves($shelves, $roles);
+        //     });
+    }
 
-    // /**
-    //  * Delete the entity jointPermissions attached to a particular role.
-    //  */
-    // public function deleteJointPermissionsForRole(Role $role)
-    // {
-    //     $this->deleteManyJointPermissionsForRoles([$role]);
-    // }
+    /**
+     * Delete the entity jointPermissions attached to a particular role.
+     */
+    public function deleteJointPermissionsForRole(Role $role)
+    {
+        $this->deleteManyJointPermissionsForRoles([$role]);
+    }
 
-    // /**
-    //  * Delete all of the entity jointPermissions for a list of entities.
-    //  *
-    //  * @param Role[] $roles
-    //  */
-    // protected function deleteManyJointPermissionsForRoles($roles)
-    // {
-    //     $roleIds = array_map(function ($role) {
-    //         return $role->id;
-    //     }, $roles);
-    //     JointPermission::query()->whereIn('role_id', $roleIds)->delete();
-    // }
+    /**
+     * Delete all of the entity jointPermissions for a list of entities.
+     *
+     * @param Role[] $roles
+     */
+    protected function deleteManyJointPermissionsForRoles($roles)
+    {
+        $roleIds = array_map(function ($role) {
+            return $role->id;
+        }, $roles);
+        JointPermission::query()->whereIn('role_id', $roleIds)->delete();
+    }
 
     // /**
     //  * Delete the entity jointPermissions for a particular entity.
