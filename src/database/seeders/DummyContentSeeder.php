@@ -24,6 +24,13 @@ class DummyContentSeeder extends Seeder
      */
     public function run()
     {
+        // Create an public user
+        $publicUser = User::factory()->create([
+            'system_name' => 'public'
+        ]);
+        $publicRole = Role::getRole('public');
+        $publicUser->attachRole($publicRole);
+
         // Create an editor user
         $editorUser = User::factory()->create();
         $editorRole = Role::getRole('editor');

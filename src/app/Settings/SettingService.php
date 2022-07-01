@@ -74,13 +74,13 @@ class SettingService
         return $this->get($this->userKey($user->id, $key), $default);
     }
 
-    // /**
-    //  * Get a value for the current logged-in user.
-    //  */
-    // public function getForCurrentUser(string $key, $default = null)
-    // {
-    //     return $this->getUser(user(), $key, $default);
-    // }
+    /**
+     * Get a value for the current logged-in user.
+     */
+    public function getForCurrentUser(string $key, $default = null)
+    {
+        return $this->getUser(user(), $key, $default);
+    }
 
     /**
      * Gets a setting value from the cache or database.

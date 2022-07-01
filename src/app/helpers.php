@@ -5,29 +5,29 @@ use App\Auth\User;
 use App\Model;
 use App\Settings\SettingService;
 
-// /**
-//  * Get the path to a versioned file.
-//  *
-//  * @throws Exception
-//  */
-// function versioned_asset(string $file = ''): string
-// {
-//     static $version = null;
+/**
+ * Get the path to a versioned file.
+ *
+ * @throws Exception
+ */
+function versioned_asset(string $file = ''): string
+{
+    static $version = null;
 
-//     if (is_null($version)) {
-//         $versionFile = base_path('version');
-//         $version = trim(file_get_contents($versionFile));
-//     }
+    if (is_null($version)) {
+        $versionFile = base_path('version');
+        $version = trim(file_get_contents($versionFile));
+    }
 
-//     $additional = '';
-//     if (config('app.env') === 'development') {
-//         $additional = sha1_file(public_path($file));
-//     }
+    $additional = '';
+    if (config('app.env') === 'development') {
+        $additional = sha1_file(public_path($file));
+    }
 
-//     $path = $file . '?version=' . urlencode($version) . $additional;
+    $path = $file . '?version=' . urlencode($version) . $additional;
 
-//     return url($path);
-// }
+    return url($path);
+}
 
 /**
  * Helper method to get the current User.
@@ -54,21 +54,21 @@ function user(): User
 //     return !auth()->guest() || setting('app-public');
 // }
 
-// /**
-//  * Check if the current user has a permission. If an ownable element
-//  * is passed in the jointPermissions are checked against that particular item.
-//  */
-// function userCan(string $permission, Model $ownable = null): bool
-// {
-//     if ($ownable === null) {
-//         return user() && user()->can($permission);
-//     }
+/**
+ * Check if the current user has a permission. If an ownable element
+ * is passed in the jointPermissions are checked against that particular item.
+ */
+function userCan(string $permission, Model $ownable = null): bool
+{
+    if ($ownable === null) {
+        return user() && user()->can($permission);
+    }
 
-//     // Check permission on ownable item
-//     $permissionService = app(PermissionService::class);
+    // Check permission on ownable item
+    $permissionService = app(PermissionService::class);
 
-//     return $permissionService->checkOwnableUserAccess($ownable, $permission);
-// }
+    return $permissionService->checkOwnableUserAccess($ownable, $permission);
+}
 
 // /**
 //  * Check if the current user has the given permission

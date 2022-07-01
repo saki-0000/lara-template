@@ -23,7 +23,6 @@ class UsersApiTest extends TestCase
 
     public function test_create_endpoint()
     {
-        // $this->withoutExceptionHandling();
         $this->actingAsApiAdmin();
         /** @var Role $role */
         $role = Role::query()->first();

@@ -87,19 +87,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected static ?User $defaultUser = null;
 
-    // /**
-    //  * Returns the default public user.
-    //  */
-    // public static function getDefault(): self
-    // {
-    //     if (!is_null(static::$defaultUser)) {
-    //         return static::$defaultUser;
-    //     }
+    /**
+     * Returns the default public user.
+     */
+    public static function getDefault(): self
+    {
+        if (!is_null(static::$defaultUser)) {
+            return static::$defaultUser;
+        }
 
-    //     static::$defaultUser = static::query()->where('system_name', '=', 'public')->first();
+        static::$defaultUser = static::query()->where('system_name', '=', 'public')->first();
 
-    //     return static::$defaultUser;
-    // }
+        return static::$defaultUser;
+    }
 
     /**
      * Check if the user is the default public user.
