@@ -29,14 +29,14 @@ use App\Settings\SettingService;
 //     return url($path);
 // }
 
-// /**
-//  * Helper method to get the current User.
-//  * Defaults to public 'Guest' user if not logged in.
-//  */
-// function user(): User
-// {
-//     return auth()->user() ?: User::getDefault();
-// }
+/**
+ * Helper method to get the current User.
+ * Defaults to public 'Guest' user if not logged in.
+ */
+function user(): User
+{
+    return auth()->user() ?: User::getDefault();
+}
 
 // /**
 //  * Check if current user is a signed in user.

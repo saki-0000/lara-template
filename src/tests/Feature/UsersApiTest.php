@@ -23,6 +23,7 @@ class UsersApiTest extends TestCase
 
     public function test_create_endpoint()
     {
+        // $this->withoutExceptionHandling();
         $this->actingAsApiAdmin();
         /** @var Role $role */
         $role = Role::query()->first();
@@ -53,6 +54,7 @@ class UsersApiTest extends TestCase
         /** @var User $user */
         $user = User::query()->where('email', '=', 'bboris@example.com')->first();
         // $this->assertActivityExists(ActivityType::USER_CREATE, null, $user->logDescriptor());
+        $this->assertActivityExists(ActivityType::USER_CREATE, null);
         $this->assertEquals(1, $user->roles()->count());
         $this->assertEquals('it', setting()->getUser($user, 'language'));
     }

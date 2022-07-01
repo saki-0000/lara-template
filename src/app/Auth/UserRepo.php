@@ -94,7 +94,7 @@ class UserRepo
             $this->inviteService->sendInvitation($user);
         }
 
-        // Activity::add(ActivityType::USER_CREATE, $user);
+        Activity::add(ActivityType::USER_CREATE, $user);
 
         return $user;
     }
