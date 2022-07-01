@@ -53,71 +53,71 @@ class RolesTest extends TestCase
     //     $this->get($deletePageUrl)->assertSee('cannot be deleted');
     // }
 
-    // public function test_role_create_update_delete_flow()
-    // {
-    //     $testRoleName = 'Test Role';
-    //     $testRoleDesc = 'a little test description';
-    //     $testRoleUpdateName = 'An Super Updated role';
+    public function test_role_create_update_delete_flow()
+    {
+        $testRoleName = 'Test Role';
+        $testRoleDesc = 'a little test description';
+        $testRoleUpdateName = 'An Super Updated role';
 
-    //     // Creation
-    //     $resp = $this->asAdmin()->get('/settings/features');
-    //     $resp->assertElementContains('a[href="' . url('/settings/roles') . '"]', 'Roles');
+        // Creation
+        $resp = $this->asAdmin()->get('/settings/features');
+        $resp->assertElementContains('a[href="' . url('/settings/roles') . '"]', 'Roles');
 
-    //     $resp = $this->get('/settings/roles');
-    //     $resp->assertElementContains('a[href="' . url('/settings/roles/new') . '"]', 'Create New Role');
+        $resp = $this->get('/settings/roles');
+        $resp->assertElementContains('a[href="' . url('/settings/roles/new') . '"]', 'Create New Role');
 
-    //     $resp = $this->get('/settings/roles/new');
-    //     $resp->assertElementContains('form[action="' . url('/settings/roles/new') . '"]', 'Save Role');
+        $resp = $this->get('/settings/roles/new');
+        $resp->assertElementContains('form[action="' . url('/settings/roles/new') . '"]', 'Save Role');
 
-    //     $resp = $this->post('/settings/roles/new', [
-    //         'display_name' => $testRoleName,
-    //         'description'  => $testRoleDesc,
-    //     ]);
-    //     $resp->assertRedirect('/settings/roles');
+        $resp = $this->post('/settings/roles/new', [
+            'display_name' => $testRoleName,
+            'description'  => $testRoleDesc,
+        ]);
+        $resp->assertRedirect('/settings/roles');
 
-    //     $resp = $this->get('/settings/roles');
-    //     $resp->assertSee($testRoleName);
-    //     $resp->assertSee($testRoleDesc);
-    //     $this->assertDatabaseHas('roles', [
-    //         'display_name' => $testRoleName,
-    //         'description'  => $testRoleDesc,
-    //         'mfa_enforced' => false,
-    //     ]);
+        $resp = $this->get('/settings/roles');
+        $resp->assertSee($testRoleName);
+        $resp->assertSee($testRoleDesc);
+        $this->assertDatabaseHas('roles', [
+            'display_name' => $testRoleName,
+            'description'  => $testRoleDesc,
+            'mfa_enforced' => false,
+        ]);
 
-    //     /** @var Role $role */
-    //     $role = Role::query()->where('display_name', '=', $testRoleName)->first();
+        /** @var Role $role */
+        $role = Role::query()->where('display_name', '=', $testRoleName)->first();
 
-    //     // Updating
-    //     $resp = $this->get('/settings/roles/' . $role->id);
-    //     $resp->assertSee($testRoleName);
-    //     $resp->assertSee($testRoleDesc);
-    //     $resp->assertElementContains('form[action="' . url('/settings/roles/' . $role->id) . '"]', 'Save Role');
+        // Updating
+        $resp = $this->get('/settings/roles/' . $role->id);
+        $resp->assertSee($testRoleName);
+        $resp->assertSee($testRoleDesc);
+        $resp->assertElementContains('form[action="' . url('/settings/roles/' . $role->id) . '"]', 'Save Role');
 
-    //     $resp = $this->put('/settings/roles/' . $role->id, [
-    //         'display_name' => $testRoleUpdateName,
-    //         'description'  => $testRoleDesc,
-    //         'mfa_enforced' => 'true',
-    //     ]);
-    //     $resp->assertRedirect('/settings/roles');
-    //     $this->assertDatabaseHas('roles', [
-    //         'display_name' => $testRoleUpdateName,
-    //         'description'  => $testRoleDesc,
-    //         'mfa_enforced' => true,
-    //     ]);
+        $resp = $this->put('/settings/roles/' . $role->id, [
+            'display_name' => $testRoleUpdateName,
+            'description'  => $testRoleDesc,
+            'mfa_enforced' => 'true',
+        ]);
+        $resp->assertRedirect('/settings/roles');
+        $this->assertDatabaseHas('roles', [
+            'display_name' => $testRoleUpdateName,
+            'description'  => $testRoleDesc,
+            'mfa_enforced' => true,
+        ]);
 
-    //     // Deleting
-    //     $resp = $this->get('/settings/roles/' . $role->id);
-    //     $resp->assertElementContains('a[href="' . url("/settings/roles/delete/$role->id") . '"]', 'Delete Role');
+        // Deleting
+        $resp = $this->get('/settings/roles/' . $role->id);
+        $resp->assertElementContains('a[href="' . url("/settings/roles/delete/$role->id") . '"]', 'Delete Role');
 
-    //     $resp = $this->get("/settings/roles/delete/$role->id");
-    //     $resp->assertSee($testRoleUpdateName);
-    //     $resp->assertElementContains('form[action="' . url("/settings/roles/delete/$role->id") . '"]', 'Confirm');
+        $resp = $this->get("/settings/roles/delete/$role->id");
+        $resp->assertSee($testRoleUpdateName);
+        $resp->assertElementContains('form[action="' . url("/settings/roles/delete/$role->id") . '"]', 'Confirm');
 
-    //     $resp = $this->delete("/settings/roles/delete/$role->id");
-    //     $resp->assertRedirect('/settings/roles');
-    //     $this->get('/settings/roles')->assertSee('Role successfully deleted');
-    //     $this->assertActivityExists(ActivityType::ROLE_DELETE);
-    // }
+        $resp = $this->delete("/settings/roles/delete/$role->id");
+        $resp->assertRedirect('/settings/roles');
+        $this->get('/settings/roles')->assertSee('Role successfully deleted');
+        $this->assertActivityExists(ActivityType::ROLE_DELETE);
+    }
 
     // public function test_admin_role_cannot_be_removed_if_user_last_admin()
     // {

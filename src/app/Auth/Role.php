@@ -29,6 +29,10 @@ class Role extends Model
 
     protected $hidden = ['pivot'];
 
+    protected $attributes = [
+        'system_name' => '',
+    ];
+
     /**
      * The roles that belong to the role.
      */

@@ -34,44 +34,44 @@ class RoleController extends Controller
         return view('settings.roles.index', ['roles' => $roles]);
     }
 
-    // /**
-    //  * Show the form to create a new role.
-    //  */
-    // public function create(Request $request)
-    // {
-    //     $this->checkPermission('user-roles-manage');
+    /**
+     * Show the form to create a new role.
+     */
+    public function create(Request $request)
+    {
+        $this->checkPermission('user-roles-manage');
 
-    //     /** @var ?Role $role */
-    //     $role = null;
-    //     if ($request->has('copy_from')) {
-    //         $role = Role::query()->find($request->get('copy_from'));
-    //     }
+        /** @var ?Role $role */
+        $role = null;
+        if ($request->has('copy_from')) {
+            $role = Role::query()->find($request->get('copy_from'));
+        }
 
-    //     if ($role) {
-    //         $role->display_name .= ' (' . trans('common.copy') . ')';
-    //     }
+        if ($role) {
+            $role->display_name .= ' (' . trans('common.copy') . ')';
+        }
 
-    //     $this->setPageTitle(trans('settings.role_create'));
+        $this->setPageTitle(trans('settings.role_create'));
 
-    //     return view('settings.roles.create', ['role' => $role]);
-    // }
+        return view('settings.roles.create', ['role' => $role]);
+    }
 
-    // /**
-    //  * Store a new role in the system.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     $this->checkPermission('user-roles-manage');
-    //     $this->validate($request, [
-    //         'display_name' => ['required', 'min:3', 'max:180'],
-    //         'description'  => ['max:180'],
-    //     ]);
+    /**
+     * Store a new role in the system.
+     */
+    public function store(Request $request)
+    {
+        $this->checkPermission('user-roles-manage');
+        $this->validate($request, [
+            'display_name' => ['required', 'min:3', 'max:180'],
+            'description'  => ['max:180'],
+        ]);
 
-    //     $this->permissionsRepo->saveNewRole($request->all());
-    //     $this->showSuccessNotification(trans('settings.role_create_success'));
+        $this->permissionsRepo->saveNewRole($request->all());
+        // $this->showSuccessNotification(trans('settings.role_create_success'));
 
-    //     return redirect('/settings/roles');
-    // }
+        return redirect('/settings/roles');
+    }
 
     // /**
     //  * Show the form for editing a user role.

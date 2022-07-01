@@ -32,30 +32,30 @@ abstract class TestCase extends BaseTestCase
     //     return $this;
     // }
 
-    // /**
-    //  * Override of the get method so we can get visibility of custom TestResponse methods.
-    //  *
-    //  * @param string $uri
-    //  * @param array  $headers
-    //  *
-    //  * @return TestResponse
-    //  */
-    // public function get($uri, array $headers = [])
-    // {
-    //     return parent::get($uri, $headers);
-    // }
+    /**
+     * Override of the get method so we can get visibility of custom TestResponse methods.
+     *
+     * @param string $uri
+     * @param array  $headers
+     *
+     * @return TestResponse
+     */
+    public function get($uri, array $headers = [])
+    {
+        return parent::get($uri, $headers);
+    }
 
-    // /**
-    //  * Create the test response instance from the given response.
-    //  *
-    //  * @param \Illuminate\Http\Response $response
-    //  *
-    //  * @return TestResponse
-    //  */
-    // protected function createTestResponse($response)
-    // {
-    //     return TestResponse::fromBaseResponse($response);
-    // }
+    /**
+     * Create the test response instance from the given response.
+     *
+     * @param \Illuminate\Http\Response $response
+     *
+     * @return TestResponse
+     */
+    protected function createTestResponse($response)
+    {
+        return TestResponse::fromBaseResponse($response);
+    }
 
     /**
      * Assert that an activity entry exists of the given key.

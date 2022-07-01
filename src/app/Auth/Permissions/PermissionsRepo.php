@@ -51,22 +51,22 @@ class PermissionsRepo
     //     return $this->role->newQuery()->findOrFail($id);
     // }
 
-    // /**
-    //  * Save a new role into the system.
-    //  */
-    // public function saveNewRole(array $roleData): Role
-    // {
-    //     $role = $this->role->newInstance($roleData);
-    //     $role->mfa_enforced = ($roleData['mfa_enforced'] ?? 'false') === 'true';
-    //     $role->save();
+    /**
+     * Save a new role into the system.
+     */
+    public function saveNewRole(array $roleData): Role
+    {
+        $role = $this->role->newInstance($roleData);
+        $role->mfa_enforced = ($roleData['mfa_enforced'] ?? 'false') === 'true';
+        $role->save();
 
-    //     $permissions = isset($roleData['permissions']) ? array_keys($roleData['permissions']) : [];
-    //     $this->assignRolePermissions($role, $permissions);
-    //     $this->permissionService->buildJointPermissionForRole($role);
-    //     Activity::add(ActivityType::ROLE_CREATE, $role);
+        $permissions = isset($roleData['permissions']) ? array_keys($roleData['permissions']) : [];
+        $this->assignRolePermissions($role, $permissions);
+        // $this->permissionService->buildJointPermissionForRole($role);
+        Activity::add(ActivityType::ROLE_CREATE, $role);
 
-    //     return $role;
-    // }
+        return $role;
+    }
 
     // /**
     //  * Updates an existing role.
@@ -97,23 +97,23 @@ class PermissionsRepo
     //     Activity::add(ActivityType::ROLE_UPDATE, $role);
     // }
 
-    // /**
-    //  * Assign an list of permission names to an role.
-    //  */
-    // protected function assignRolePermissions(Role $role, array $permissionNameArray = [])
-    // {
-    //     $permissions = [];
-    //     $permissionNameArray = array_values($permissionNameArray);
+    /**
+     * Assign an list of permission names to an role.
+     */
+    protected function assignRolePermissions(Role $role, array $permissionNameArray = [])
+    {
+        $permissions = [];
+        $permissionNameArray = array_values($permissionNameArray);
 
-    //     if ($permissionNameArray) {
-    //         $permissions = $this->permission->newQuery()
-    //             ->whereIn('name', $permissionNameArray)
-    //             ->pluck('id')
-    //             ->toArray();
-    //     }
+        if ($permissionNameArray) {
+            $permissions = $this->permission->newQuery()
+                ->whereIn('name', $permissionNameArray)
+                ->pluck('id')
+                ->toArray();
+        }
 
-    //     $role->permissions()->sync($permissions);
-    // }
+        $role->permissions()->sync($permissions);
+    }
 
     // /**
     //  * Delete a role from the system.

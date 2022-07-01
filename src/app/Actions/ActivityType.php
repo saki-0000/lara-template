@@ -42,9 +42,9 @@ class ActivityType
     // const API_TOKEN_UPDATE = 'api_token_update';
     // const API_TOKEN_DELETE = 'api_token_delete';
 
-    // const ROLE_CREATE = 'role_create';
-    // const ROLE_UPDATE = 'role_update';
-    // const ROLE_DELETE = 'role_delete';
+    const ROLE_CREATE = 'role_create';
+    const ROLE_UPDATE = 'role_update';
+    const ROLE_DELETE = 'role_delete';
 
     // const AUTH_PASSWORD_RESET = 'auth_password_reset_request';
     // const AUTH_PASSWORD_RESET_UPDATE = 'auth_password_reset_update';

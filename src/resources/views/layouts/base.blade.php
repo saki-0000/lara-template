@@ -20,13 +20,13 @@
     <link rel="stylesheet" href="{{ versioned_asset('dist/styles.css') }}">
     <link rel="stylesheet" media="print" href="{{ versioned_asset('dist/print-styles.css') }}">
 
-    {{-- @yield('head') --}}
+    @yield('head')
 
     <!-- Custom Styles & Head Content -->
-    {{-- @include('common.custom-styles') --}}
+    @include('common.custom-styles')
     {{-- @include('common.custom-head') --}}
 
-    {{-- @stack('head') --}}
+    @stack('head')
 
     <!-- Translations for JS -->
     @stack('translations')
@@ -49,11 +49,9 @@
         </div>
     </div>
 
-    {{-- 一旦テストを通す --}}
-    Settings
-    {{-- @yield('bottom') --}}
+    @yield('bottom')
     {{-- <script src="{{ versioned_asset('dist/app.js') }}" nonce="{{ $cspNonce }}"></script> --}}
-    {{-- @yield('scripts') --}}
+    @yield('scripts')
 
 </body>
 </html>
