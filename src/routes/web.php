@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookshelfController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Shelves
+// Route::get('/create-shelf', [BookshelfController::class, 'create']);
+// Route::get('/shelves/', [BookshelfController::class, 'index']);
+// Route::post('/shelves/', [BookshelfController::class, 'store']);
+Route::get('/shelves/{slug}/edit', [BookshelfController::class, 'edit']);
+
 Route::get('/settings/roles', [RoleController::class, 'index']);
 Route::get('/settings/roles/new', [RoleController::class, 'create']);
 Route::post('/settings/roles/new', [RoleController::class, 'store']);

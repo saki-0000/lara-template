@@ -24,13 +24,6 @@ class DummyContentSeeder extends Seeder
      */
     public function run()
     {
-        // Create an public user
-        $publicUser = User::factory()->create([
-            'system_name' => 'public'
-        ]);
-        $publicRole = Role::getRole('public');
-        $publicUser->attachRole($publicRole);
-
         // Create an editor user
         $editorUser = User::factory()->create();
         $editorRole = Role::getRole('editor');
@@ -61,7 +54,7 @@ class DummyContentSeeder extends Seeder
         // $largeBook->pages()->saveMany($pages);
         // $largeBook->chapters()->saveMany($chapters);
 
-        // $shelves = Bookshelf::factory()->count(10)->create($byData);
+        $shelves = Bookshelf::factory()->count(10)->create($byData);
         // $largeBook->shelves()->attach($shelves->pluck('id'));
 
         // Assign API permission to editor role and create an API key
@@ -76,7 +69,15 @@ class DummyContentSeeder extends Seeder
         // ]);
         // $token->save();
 
-        // app(PermissionService::class)->buildJointPermissions();
+
+        // Create an public user
+        $publicUser = User::factory()->create([
+            'system_name' => 'public'
+        ]);
+        $publicRole = Role::getRole('public');
+        $publicUser->attachRole($publicRole);
+
+        app(PermissionService::class)->buildJointPermissions();
         // app(SearchIndex::class)->indexAllEntities();
     }
 }

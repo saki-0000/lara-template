@@ -41,13 +41,13 @@ class PermissionService
      */
     protected $entityCache;
 
-    // /**
-    //  * PermissionService constructor.
-    //  */
-    // public function __construct(Connection $db)
-    // {
-    //     $this->db = $db;
-    // }
+    /**
+     * PermissionService constructor.
+     */
+    public function __construct(Connection $db)
+    {
+        $this->db = $db;
+    }
 
     // /**
     //  * Set the database connection.
@@ -57,23 +57,23 @@ class PermissionService
     //     $this->db = $connection;
     // }
 
-    // /**
-    //  * Prepare the local entity cache and ensure it's empty.
-    //  *
-    //  * @param Entity[] $entities
-    //  */
-    // protected function readyEntityCache(array $entities = [])
-    // {
-    //     $this->entityCache = [];
+    /**
+     * Prepare the local entity cache and ensure it's empty.
+     *
+     * @param Entity[] $entities
+     */
+    protected function readyEntityCache(array $entities = [])
+    {
+        $this->entityCache = [];
 
-    //     foreach ($entities as $entity) {
-    //         $class = get_class($entity);
-    //         if (!isset($this->entityCache[$class])) {
-    //             $this->entityCache[$class] = collect();
-    //         }
-    //         $this->entityCache[$class]->put($entity->id, $entity);
-    //     }
-    // }
+        foreach ($entities as $entity) {
+            $class = get_class($entity);
+            if (!isset($this->entityCache[$class])) {
+                $this->entityCache[$class] = collect();
+            }
+            $this->entityCache[$class]->put($entity->id, $entity);
+        }
+    }
 
     // /**
     //  * Get a book via ID, Checks local cache.
@@ -101,46 +101,46 @@ class PermissionService
     //         ->find($chapterId);
     // }
 
-    // /**
-    //  * Get the roles for the current logged in user.
-    //  */
-    // protected function getCurrentUserRoles(): array
-    // {
-    //     if (!is_null($this->userRoles)) {
-    //         return $this->userRoles;
-    //     }
+    /**
+     * Get the roles for the current logged in user.
+     */
+    protected function getCurrentUserRoles(): array
+    {
+        if (!is_null($this->userRoles)) {
+            return $this->userRoles;
+        }
 
-    //     if (auth()->guest()) {
-    //         $this->userRoles = [Role::getSystemRole('public')->id];
-    //     } else {
-    //         $this->userRoles = $this->currentUser()->roles->pluck('id')->values()->all();
-    //     }
+        if (auth()->guest()) {
+            $this->userRoles = [Role::getSystemRole('public')->id];
+        } else {
+            $this->userRoles = $this->currentUser()->roles->pluck('id')->values()->all();
+        }
 
-    //     return $this->userRoles;
-    // }
+        return $this->userRoles;
+    }
 
-    // /**
-    //  * Re-generate all entity permission from scratch.
-    //  */
-    // public function buildJointPermissions()
-    // {
-    //     JointPermission::query()->truncate();
-    //     $this->readyEntityCache();
+    /**
+     * Re-generate all entity permission from scratch.
+     */
+    public function buildJointPermissions()
+    {
+        JointPermission::query()->truncate();
+        $this->readyEntityCache();
 
-    //     // Get all roles (Should be the most limited dimension)
-    //     $roles = Role::query()->with('permissions')->get()->all();
+        // Get all roles (Should be the most limited dimension)
+        $roles = Role::query()->with('permissions')->get()->all();
 
-    //     // Chunk through all books
-    //     $this->bookFetchQuery()->chunk(5, function (EloquentCollection $books) use ($roles) {
-    //         $this->buildJointPermissionsForBooks($books, $roles);
-    //     });
+        // // Chunk through all books
+        // $this->bookFetchQuery()->chunk(5, function (EloquentCollection $books) use ($roles) {
+        //     $this->buildJointPermissionsForBooks($books, $roles);
+        // });
 
-    //     // Chunk through all bookshelves
-    //     Bookshelf::query()->withTrashed()->select(['id', 'restricted', 'owned_by'])
-    //         ->chunk(50, function (EloquentCollection $shelves) use ($roles) {
-    //             $this->buildJointPermissionsForShelves($shelves, $roles);
-    //         });
-    // }
+        // Chunk through all bookshelves
+        Bookshelf::query()->withTrashed()->select(['id', 'restricted', 'owned_by'])
+            ->chunk(50, function (EloquentCollection $shelves) use ($roles) {
+                $this->buildJointPermissionsForShelves($shelves, $roles);
+            });
+    }
 
     // /**
     //  * Get a query for fetching a book with it's children.
@@ -158,18 +158,18 @@ class PermissionService
     //         ]);
     // }
 
-    // /**
-    //  * Build joint permissions for the given shelf and role combinations.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // protected function buildJointPermissionsForShelves(EloquentCollection $shelves, array $roles, bool $deleteOld = false)
-    // {
-    //     if ($deleteOld) {
-    //         $this->deleteManyJointPermissionsForEntities($shelves->all());
-    //     }
-    //     $this->createManyJointPermissions($shelves->all(), $roles);
-    // }
+    /**
+     * Build joint permissions for the given shelf and role combinations.
+     *
+     * @throws Throwable
+     */
+    protected function buildJointPermissionsForShelves(EloquentCollection $shelves, array $roles, bool $deleteOld = false)
+    {
+        if ($deleteOld) {
+            $this->deleteManyJointPermissionsForEntities($shelves->all());
+        }
+        $this->createManyJointPermissions($shelves->all(), $roles);
+    }
 
     // /**
     //  * Build joint permissions for the given book and role combinations.
@@ -255,10 +255,10 @@ class PermissionService
         // });
 
         // Chunk through all bookshelves
-        // Bookshelf::query()->select(['id', 'restricted', 'owned_by'])
-        //     ->chunk(50, function ($shelves) use ($roles) {
-        //         $this->buildJointPermissionsForShelves($shelves, $roles);
-        //     });
+        Bookshelf::query()->select(['id', 'restricted', 'owned_by'])
+            ->chunk(50, function ($shelves) use ($roles) {
+                $this->buildJointPermissionsForShelves($shelves, $roles);
+            });
     }
 
     /**
@@ -294,153 +294,153 @@ class PermissionService
     //     $this->deleteManyJointPermissionsForEntities([$entity]);
     // }
 
-    // /**
-    //  * Delete all of the entity jointPermissions for a list of entities.
-    //  *
-    //  * @param Entity[] $entities
-    //  *
-    //  * @throws Throwable
-    //  */
-    // protected function deleteManyJointPermissionsForEntities(array $entities)
-    // {
-    //     if (count($entities) === 0) {
-    //         return;
-    //     }
+    /**
+     * Delete all of the entity jointPermissions for a list of entities.
+     *
+     * @param Entity[] $entities
+     *
+     * @throws Throwable
+     */
+    protected function deleteManyJointPermissionsForEntities(array $entities)
+    {
+        if (count($entities) === 0) {
+            return;
+        }
 
-    //     $this->db->transaction(function () use ($entities) {
-    //         foreach (array_chunk($entities, 1000) as $entityChunk) {
-    //             $query = $this->db->table('joint_permissions');
-    //             foreach ($entityChunk as $entity) {
-    //                 $query->orWhere(function (QueryBuilder $query) use ($entity) {
-    //                     $query->where('entity_id', '=', $entity->id)
-    //                         ->where('entity_type', '=', $entity->getMorphClass());
-    //                 });
-    //             }
-    //             $query->delete();
-    //         }
-    //     });
-    // }
+        $this->db->transaction(function () use ($entities) {
+            foreach (array_chunk($entities, 1000) as $entityChunk) {
+                $query = $this->db->table('joint_permissions');
+                foreach ($entityChunk as $entity) {
+                    $query->orWhere(function (QueryBuilder $query) use ($entity) {
+                        $query->where('entity_id', '=', $entity->id)
+                            ->where('entity_type', '=', $entity->getMorphClass());
+                    });
+                }
+                $query->delete();
+            }
+        });
+    }
 
-    // /**
-    //  * Create & Save entity jointPermissions for many entities and roles.
-    //  *
-    //  * @param Entity[] $entities
-    //  * @param Role[]   $roles
-    //  *
-    //  * @throws Throwable
-    //  */
-    // protected function createManyJointPermissions(array $entities, array $roles)
-    // {
-    //     $this->readyEntityCache($entities);
-    //     $jointPermissions = [];
+    /**
+     * Create & Save entity jointPermissions for many entities and roles.
+     *
+     * @param Entity[] $entities
+     * @param Role[]   $roles
+     *
+     * @throws Throwable
+     */
+    protected function createManyJointPermissions(array $entities, array $roles)
+    {
+        $this->readyEntityCache($entities);
+        $jointPermissions = [];
 
-    //     // Fetch Entity Permissions and create a mapping of entity restricted statuses
-    //     $entityRestrictedMap = [];
-    //     $permissionFetch = EntityPermission::query();
-    //     foreach ($entities as $entity) {
-    //         $entityRestrictedMap[$entity->getMorphClass() . ':' . $entity->id] = boolval($entity->getRawAttribute('restricted'));
-    //         $permissionFetch->orWhere(function ($query) use ($entity) {
-    //             $query->where('restrictable_id', '=', $entity->id)->where('restrictable_type', '=', $entity->getMorphClass());
-    //         });
-    //     }
-    //     $permissions = $permissionFetch->get();
+        // Fetch Entity Permissions and create a mapping of entity restricted statuses
+        $entityRestrictedMap = [];
+        $permissionFetch = EntityPermission::query();
+        foreach ($entities as $entity) {
+            $entityRestrictedMap[$entity->getMorphClass() . ':' . $entity->id] = boolval($entity->getRawAttribute('restricted'));
+            $permissionFetch->orWhere(function ($query) use ($entity) {
+                $query->where('restrictable_id', '=', $entity->id)->where('restrictable_type', '=', $entity->getMorphClass());
+            });
+        }
+        $permissions = $permissionFetch->get();
 
-    //     // Create a mapping of explicit entity permissions
-    //     $permissionMap = [];
-    //     foreach ($permissions as $permission) {
-    //         $key = $permission->restrictable_type . ':' . $permission->restrictable_id . ':' . $permission->role_id . ':' . $permission->action;
-    //         $isRestricted = $entityRestrictedMap[$permission->restrictable_type . ':' . $permission->restrictable_id];
-    //         $permissionMap[$key] = $isRestricted;
-    //     }
+        // Create a mapping of explicit entity permissions
+        $permissionMap = [];
+        foreach ($permissions as $permission) {
+            $key = $permission->restrictable_type . ':' . $permission->restrictable_id . ':' . $permission->role_id . ':' . $permission->action;
+            $isRestricted = $entityRestrictedMap[$permission->restrictable_type . ':' . $permission->restrictable_id];
+            $permissionMap[$key] = $isRestricted;
+        }
 
-    //     // Create a mapping of role permissions
-    //     $rolePermissionMap = [];
-    //     foreach ($roles as $role) {
-    //         foreach ($role->permissions as $permission) {
-    //             $rolePermissionMap[$role->getRawAttribute('id') . ':' . $permission->getRawAttribute('name')] = true;
-    //         }
-    //     }
+        // Create a mapping of role permissions
+        $rolePermissionMap = [];
+        foreach ($roles as $role) {
+            foreach ($role->permissions as $permission) {
+                $rolePermissionMap[$role->getRawAttribute('id') . ':' . $permission->getRawAttribute('name')] = true;
+            }
+        }
 
-    //     // Create Joint Permission Data
-    //     foreach ($entities as $entity) {
-    //         foreach ($roles as $role) {
-    //             foreach ($this->getActions($entity) as $action) {
-    //                 $jointPermissions[] = $this->createJointPermissionData($entity, $role, $action, $permissionMap, $rolePermissionMap);
-    //             }
-    //         }
-    //     }
+        // Create Joint Permission Data
+        foreach ($entities as $entity) {
+            foreach ($roles as $role) {
+                foreach ($this->getActions($entity) as $action) {
+                    $jointPermissions[] = $this->createJointPermissionData($entity, $role, $action, $permissionMap, $rolePermissionMap);
+                }
+            }
+        }
 
-    //     $this->db->transaction(function () use ($jointPermissions) {
-    //         foreach (array_chunk($jointPermissions, 1000) as $jointPermissionChunk) {
-    //             $this->db->table('joint_permissions')->insert($jointPermissionChunk);
-    //         }
-    //     });
-    // }
+        $this->db->transaction(function () use ($jointPermissions) {
+            foreach (array_chunk($jointPermissions, 1000) as $jointPermissionChunk) {
+                $this->db->table('joint_permissions')->insert($jointPermissionChunk);
+            }
+        });
+    }
 
-    // /**
-    //  * Get the actions related to an entity.
-    //  */
-    // protected function getActions(Entity $entity): array
-    // {
-    //     $baseActions = ['view', 'update', 'delete'];
-    //     if ($entity instanceof Chapter || $entity instanceof Book) {
-    //         $baseActions[] = 'page-create';
-    //     }
-    //     if ($entity instanceof Book) {
-    //         $baseActions[] = 'chapter-create';
-    //     }
+    /**
+     * Get the actions related to an entity.
+     */
+    protected function getActions(Entity $entity): array
+    {
+        $baseActions = ['view', 'update', 'delete'];
+        if ($entity instanceof Chapter || $entity instanceof Book) {
+            $baseActions[] = 'page-create';
+        }
+        if ($entity instanceof Book) {
+            $baseActions[] = 'chapter-create';
+        }
 
-    //     return $baseActions;
-    // }
+        return $baseActions;
+    }
 
-    // /**
-    //  * Create entity permission data for an entity and role
-    //  * for a particular action.
-    //  */
-    // protected function createJointPermissionData(Entity $entity, Role $role, string $action, array $permissionMap, array $rolePermissionMap): array
-    // {
-    //     $permissionPrefix = (strpos($action, '-') === false ? ($entity->getType() . '-') : '') . $action;
-    //     $roleHasPermission = isset($rolePermissionMap[$role->getRawAttribute('id') . ':' . $permissionPrefix . '-all']);
-    //     $roleHasPermissionOwn = isset($rolePermissionMap[$role->getRawAttribute('id') . ':' . $permissionPrefix . '-own']);
-    //     $explodedAction = explode('-', $action);
-    //     $restrictionAction = end($explodedAction);
+    /**
+     * Create entity permission data for an entity and role
+     * for a particular action.
+     */
+    protected function createJointPermissionData(Entity $entity, Role $role, string $action, array $permissionMap, array $rolePermissionMap): array
+    {
+        $permissionPrefix = (strpos($action, '-') === false ? ($entity->getType() . '-') : '') . $action;
+        $roleHasPermission = isset($rolePermissionMap[$role->getRawAttribute('id') . ':' . $permissionPrefix . '-all']);
+        $roleHasPermissionOwn = isset($rolePermissionMap[$role->getRawAttribute('id') . ':' . $permissionPrefix . '-own']);
+        $explodedAction = explode('-', $action);
+        $restrictionAction = end($explodedAction);
 
-    //     if ($role->system_name === 'admin') {
-    //         return $this->createJointPermissionDataArray($entity, $role, $action, true, true);
-    //     }
+        if ($role->system_name === 'admin') {
+            return $this->createJointPermissionDataArray($entity, $role, $action, true, true);
+        }
 
-    //     if ($entity->restricted) {
-    //         $hasAccess = $this->mapHasActiveRestriction($permissionMap, $entity, $role, $restrictionAction);
+        if ($entity->restricted) {
+            $hasAccess = $this->mapHasActiveRestriction($permissionMap, $entity, $role, $restrictionAction);
 
-    //         return $this->createJointPermissionDataArray($entity, $role, $action, $hasAccess, $hasAccess);
-    //     }
+            return $this->createJointPermissionDataArray($entity, $role, $action, $hasAccess, $hasAccess);
+        }
 
-    //     if ($entity instanceof Book || $entity instanceof Bookshelf) {
-    //         return $this->createJointPermissionDataArray($entity, $role, $action, $roleHasPermission, $roleHasPermissionOwn);
-    //     }
+        if ($entity instanceof Book || $entity instanceof Bookshelf) {
+            return $this->createJointPermissionDataArray($entity, $role, $action, $roleHasPermission, $roleHasPermissionOwn);
+        }
 
-    //     // For chapters and pages, Check if explicit permissions are set on the Book.
-    //     $book = $this->getBook($entity->book_id);
-    //     $hasExplicitAccessToParents = $this->mapHasActiveRestriction($permissionMap, $book, $role, $restrictionAction);
-    //     $hasPermissiveAccessToParents = !$book->restricted;
+        // For chapters and pages, Check if explicit permissions are set on the Book.
+        $book = $this->getBook($entity->book_id);
+        $hasExplicitAccessToParents = $this->mapHasActiveRestriction($permissionMap, $book, $role, $restrictionAction);
+        $hasPermissiveAccessToParents = !$book->restricted;
 
-    //     // For pages with a chapter, Check if explicit permissions are set on the Chapter
-    //     if ($entity instanceof Page && intval($entity->chapter_id) !== 0) {
-    //         $chapter = $this->getChapter($entity->chapter_id);
-    //         $hasPermissiveAccessToParents = $hasPermissiveAccessToParents && !$chapter->restricted;
-    //         if ($chapter->restricted) {
-    //             $hasExplicitAccessToParents = $this->mapHasActiveRestriction($permissionMap, $chapter, $role, $restrictionAction);
-    //         }
-    //     }
+        // For pages with a chapter, Check if explicit permissions are set on the Chapter
+        if ($entity instanceof Page && intval($entity->chapter_id) !== 0) {
+            $chapter = $this->getChapter($entity->chapter_id);
+            $hasPermissiveAccessToParents = $hasPermissiveAccessToParents && !$chapter->restricted;
+            if ($chapter->restricted) {
+                $hasExplicitAccessToParents = $this->mapHasActiveRestriction($permissionMap, $chapter, $role, $restrictionAction);
+            }
+        }
 
-    //     return $this->createJointPermissionDataArray(
-    //         $entity,
-    //         $role,
-    //         $action,
-    //         ($hasExplicitAccessToParents || ($roleHasPermission && $hasPermissiveAccessToParents)),
-    //         ($hasExplicitAccessToParents || ($roleHasPermissionOwn && $hasPermissiveAccessToParents))
-    //     );
-    // }
+        return $this->createJointPermissionDataArray(
+            $entity,
+            $role,
+            $action,
+            ($hasExplicitAccessToParents || ($roleHasPermission && $hasPermissiveAccessToParents)),
+            ($hasExplicitAccessToParents || ($roleHasPermissionOwn && $hasPermissiveAccessToParents))
+        );
+    }
 
     // /**
     //  * Check for an active restriction in an entity map.
@@ -452,58 +452,59 @@ class PermissionService
     //     return $entityMap[$key] ?? false;
     // }
 
-    // /**
-    //  * Create an array of data with the information of an entity jointPermissions.
-    //  * Used to build data for bulk insertion.
-    //  */
-    // protected function createJointPermissionDataArray(Entity $entity, Role $role, string $action, bool $permissionAll, bool $permissionOwn): array
-    // {
-    //     return [
-    //         'role_id'            => $role->getRawAttribute('id'),
-    //         'entity_id'          => $entity->getRawAttribute('id'),
-    //         'entity_type'        => $entity->getMorphClass(),
-    //         'action'             => $action,
-    //         'has_permission'     => $permissionAll,
-    //         'has_permission_own' => $permissionOwn,
-    //         'owned_by'           => $entity->getRawAttribute('owned_by'),
-    //     ];
-    // }
+    /**
+     * Create an array of data with the information of an entity jointPermissions.
+     * Used to build data for bulk insertion.
+     */
+    protected function createJointPermissionDataArray(Entity $entity, Role $role, string $action, bool $permissionAll, bool $permissionOwn): array
+    {
+        return [
+            'role_id'            => $role->getRawAttribute('id'),
+            'entity_id'          => $entity->getRawAttribute('id'),
+            'entity_type'        => $entity->getMorphClass(),
+            'action'             => $action,
+            'has_permission'     => $permissionAll,
+            'has_permission_own' => $permissionOwn,
+            'owned_by'           => $entity->getRawAttribute('owned_by'),
+        ];
+    }
 
-    // /**
-    //  * Checks if an entity has a restriction set upon it.
-    //  *
-    //  * @param HasCreatorAndUpdater|HasOwner $ownable
-    //  */
-    // public function checkOwnableUserAccess(Model $ownable, string $permission): bool
-    // {
-    //     $explodedPermission = explode('-', $permission);
+    /**
+     * Checks if an entity has a restriction set upon it.
+     *
+     * @param HasCreatorAndUpdater|HasOwner $ownable
+     */
+    public function checkOwnableUserAccess(Model $ownable, string $permission): bool
+    {
+        $explodedPermission = explode('-', $permission);
 
-    //     $baseQuery = $ownable->newQuery()->where('id', '=', $ownable->id);
-    //     $action = end($explodedPermission);
-    //     $user = $this->currentUser();
+        $baseQuery = $ownable->newQuery()->where('id', '=', $ownable->id);
+        $action = end($explodedPermission);
+        $user = $this->currentUser();
 
-    //     $nonJointPermissions = ['restrictions', 'image', 'attachment', 'comment'];
+        $nonJointPermissions = ['restrictions', 'image', 'attachment', 'comment'];
 
-    //     // Handle non entity specific jointPermissions
-    //     if (in_array($explodedPermission[0], $nonJointPermissions)) {
-    //         $allPermission = $user && $user->can($permission . '-all');
-    //         $ownPermission = $user && $user->can($permission . '-own');
-    //         $ownerField = ($ownable instanceof Entity) ? 'owned_by' : 'created_by';
-    //         $isOwner = $user && $user->id === $ownable->$ownerField;
+        // Handle non entity specific jointPermissions
+        if (in_array($explodedPermission[0], $nonJointPermissions)) {
+            $allPermission = $user && $user->can($permission . '-all');
+            $ownPermission = $user && $user->can($permission . '-own');
+            $ownerField = ($ownable instanceof Entity) ? 'owned_by' : 'created_by';
+            $isOwner = $user && $user->id === $ownable->$ownerField;
 
-    //         return $allPermission || ($isOwner && $ownPermission);
-    //     }
+            return $allPermission || ($isOwner && $ownPermission);
+        }
 
-    //     // Handle abnormal create jointPermissions
-    //     if ($action === 'create') {
-    //         $action = $permission;
-    //     }
+        // Handle abnormal create jointPermissions
+        if ($action === 'create') {
+            $action = $permission;
+        }
 
-    //     $hasAccess = $this->entityRestrictionQuery($baseQuery, $action)->count() > 0;
-    //     $this->clean();
+        $this->entityRestrictionQuery($baseQuery, $action)->dump();
+        $hasAccess = $this->entityRestrictionQuery($baseQuery, $action)->count() > 0;
+        $this->clean();
 
-    //     return $hasAccess;
-    // }
+        return $hasAccess;
+    }
 
     // /**
     //  * Checks if a user has the given permission for any items in the system.
@@ -532,45 +533,45 @@ class PermissionService
     //     return $hasPermission;
     // }
 
-    // /**
-    //  * The general query filter to remove all entities
-    //  * that the current user does not have access to.
-    //  */
-    // protected function entityRestrictionQuery(Builder $query, string $action): Builder
-    // {
-    //     $q = $query->where(function ($parentQuery) use ($action) {
-    //         $parentQuery->whereHas('jointPermissions', function ($permissionQuery) use ($action) {
-    //             $permissionQuery->whereIn('role_id', $this->getCurrentUserRoles())
-    //                 ->where('action', '=', $action)
-    //                 ->where(function (Builder $query) {
-    //                     $this->addJointHasPermissionCheck($query, $this->currentUser()->id);
-    //                 });
-    //         });
-    //     });
+    /**
+     * The general query filter to remove all entities
+     * that the current user does not have access to.
+     */
+    protected function entityRestrictionQuery(Builder $query, string $action): Builder
+    {
+        $q = $query->where(function ($parentQuery) use ($action) {
+            $parentQuery->whereHas('jointPermissions', function ($permissionQuery) use ($action) {
+                $permissionQuery->whereIn('role_id', $this->getCurrentUserRoles())
+                    ->where('action', '=', $action)
+                    ->where(function (Builder $query) {
+                        $this->addJointHasPermissionCheck($query, $this->currentUser()->id);
+                    });
+            });
+        });
 
-    //     $this->clean();
+        $this->clean();
 
-    //     return $q;
-    // }
+        return $q;
+    }
 
-    // /**
-    //  * Limited the given entity query so that the query will only
-    //  * return items that the user has permission for the given ability.
-    //  */
-    // public function restrictEntityQuery(Builder $query, string $ability = 'view'): Builder
-    // {
-    //     $this->clean();
+    /**
+     * Limited the given entity query so that the query will only
+     * return items that the user has permission for the given ability.
+     */
+    public function restrictEntityQuery(Builder $query, string $ability = 'view'): Builder
+    {
+        $this->clean();
 
-    //     return $query->where(function (Builder $parentQuery) use ($ability) {
-    //         $parentQuery->whereHas('jointPermissions', function (Builder $permissionQuery) use ($ability) {
-    //             $permissionQuery->whereIn('role_id', $this->getCurrentUserRoles())
-    //                 ->where('action', '=', $ability)
-    //                 ->where(function (Builder $query) {
-    //                     $this->addJointHasPermissionCheck($query, $this->currentUser()->id);
-    //                 });
-    //         });
-    //     });
-    // }
+        return $query->where(function (Builder $parentQuery) use ($ability) {
+            $parentQuery->whereHas('jointPermissions', function (Builder $permissionQuery) use ($ability) {
+                $permissionQuery->whereIn('role_id', $this->getCurrentUserRoles())
+                    ->where('action', '=', $ability)
+                    ->where(function (Builder $query) {
+                        $this->addJointHasPermissionCheck($query, $this->currentUser()->id);
+                    });
+            });
+        });
+    }
 
     // /**
     //  * Extend the given page query to ensure draft items are not visible
@@ -682,38 +683,38 @@ class PermissionService
     //     return $q;
     // }
 
-    // /**
-    //  * Add the query for checking the given user id has permission
-    //  * within the join_permissions table.
-    //  *
-    //  * @param QueryBuilder|Builder $query
-    //  */
-    // protected function addJointHasPermissionCheck($query, int $userIdToCheck)
-    // {
-    //     $query->where('joint_permissions.has_permission', '=', true)->orWhere(function ($query) use ($userIdToCheck) {
-    //         $query->where('joint_permissions.has_permission_own', '=', true)
-    //             ->where('joint_permissions.owned_by', '=', $userIdToCheck);
-    //     });
-    // }
+    /**
+     * Add the query for checking the given user id has permission
+     * within the join_permissions table.
+     *
+     * @param QueryBuilder|Builder $query
+     */
+    protected function addJointHasPermissionCheck($query, int $userIdToCheck)
+    {
+        $query->where('joint_permissions.has_permission', '=', true)->orWhere(function ($query) use ($userIdToCheck) {
+            $query->where('joint_permissions.has_permission_own', '=', true)
+                ->where('joint_permissions.owned_by', '=', $userIdToCheck);
+        });
+    }
 
-    // /**
-    //  * Get the current user.
-    //  */
-    // private function currentUser(): User
-    // {
-    //     if (is_null($this->currentUserModel)) {
-    //         $this->currentUserModel = user();
-    //     }
+    /**
+     * Get the current user.
+     */
+    private function currentUser(): User
+    {
+        if (is_null($this->currentUserModel)) {
+            $this->currentUserModel = user();
+        }
 
-    //     return $this->currentUserModel;
-    // }
+        return $this->currentUserModel;
+    }
 
-    // /**
-    //  * Clean the cached user elements.
-    //  */
-    // private function clean(): void
-    // {
-    //     $this->currentUserModel = null;
-    //     $this->userRoles = null;
-    // }
+    /**
+     * Clean the cached user elements.
+     */
+    private function clean(): void
+    {
+        $this->currentUserModel = null;
+        $this->userRoles = null;
+    }
 }

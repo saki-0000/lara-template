@@ -35,9 +35,9 @@ class CustomFacadeProvider extends ServiceProvider
         //     return $this->app->make(ImageService::class);
         // });
 
-        // $this->app->singleton('permissions', function () {
-        //     return $this->app->make(PermissionService::class);
-        // });
+        $this->app->singleton('permissions', function () {
+            return $this->app->make(PermissionService::class);
+        });
 
         // $this->app->singleton('theme', function () {
         //     return $this->app->make(ThemeService::class);

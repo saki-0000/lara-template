@@ -4,9 +4,9 @@ namespace App\Auth;
 
 use App\Auth\Permissions\JointPermission;
 use App\Auth\Permissions\RolePermission;
+use App\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
