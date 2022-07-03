@@ -15,7 +15,7 @@ class AddWebhooksTimeoutErrorColumns extends Migration
     {
         Schema::table('webhooks', function (Blueprint $table) {
             $table->unsignedInteger('timeout')->default(3);
-            $table->text('last_error');
+            $table->text('last_error')->default('');
             $table->timestamp('last_called_at')->nullable();
             $table->timestamp('last_errored_at')->nullable();
         });
