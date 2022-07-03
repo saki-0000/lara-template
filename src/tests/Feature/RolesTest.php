@@ -144,6 +144,21 @@ class RolesTest extends TestCase
     }
 
     // テストデータ（前提条件）がよくわからず一旦保留
+    // public function test_bookshelves_create_all_permissions()
+    // {
+    //     $this->checkAccessPermission('bookshelf-create-all', [
+    //         '/create-shelf',
+    //     ], [
+    //         '/shelves' => 'New Shelf',
+    //     ]);
+
+    //     $this->post('/shelves', [
+    //         'name'        => 'test shelf',
+    //         'description' => 'shelf desc',
+    //     ])->assertRedirect('/shelves/test-shelf');
+    // }
+
+    // テストデータ（前提条件）がよくわからず一旦保留
     // public function test_bookshelves_edit_own_permission()
     // {
     //     /** @var Bookshelf $otherShelf */

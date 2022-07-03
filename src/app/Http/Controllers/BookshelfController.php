@@ -63,17 +63,17 @@ class BookshelfController extends Controller
     //     ]);
     // }
 
-    // /**
-    //  * Show the form for creating a new bookshelf.
-    //  */
-    // public function create()
-    // {
-    //     $this->checkPermission('bookshelf-create-all');
-    //     $books = Book::hasPermission('update')->get();
-    //     $this->setPageTitle(trans('entities.shelves_create'));
+    /**
+     * Show the form for creating a new bookshelf.
+     */
+    public function create()
+    {
+        $this->checkPermission('bookshelf-create-all');
+        $books = Book::hasPermission('update')->get();
+        $this->setPageTitle(trans('entities.shelves_create'));
 
-    //     return view('shelves.create', ['books' => $books]);
-    // }
+        return view('shelves.create', ['books' => $books]);
+    }
 
     // /**
     //  * Store a newly created bookshelf in storage.

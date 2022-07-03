@@ -13,7 +13,7 @@ class AddExternalAuthToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('external_auth_id')->default('')->index();
+            $table->string('external_auth_id')->index();
         });
     }
 
