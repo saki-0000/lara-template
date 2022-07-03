@@ -39,7 +39,7 @@
 
 
 
-<div class="form-group" collapsible id="logo-control">
+{{-- <div class="form-group" collapsible id="logo-control">
     <button type="button" class="collapse-title text-primary" collapsible-trigger aria-expanded="false">
         <label>{{ trans('common.cover_image') }}</label>
     </button>
@@ -53,7 +53,7 @@
             'imageClass' => 'cover'
         ])
     </div>
-</div>
+</div> --}}
 
 <div class="form-group" collapsible id="tags-control">
     <button type="button" class="collapse-title text-primary" collapsible-trigger aria-expanded="false">

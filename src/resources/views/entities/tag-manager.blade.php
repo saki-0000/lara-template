@@ -10,10 +10,10 @@
         <a href="{{ url('/tags') }}" target="_blank">{{ trans('entities.tags_view_existing_tags') }}</a>.
     </p>
 
-    <div component="sortable-list"
+    {{-- <div component="sortable-list"
          option:sortable-list:handle-selector=".handle">
         @include('entities.tag-manager-list', ['tags' => $entity ? $entity->tags->all() : []])
-    </div>
+    </div> --}}
 
     <button refs="add-remove-rows@add" type="button" class="text-button">{{ trans('entities.tags_add') }}</button>
 </div>

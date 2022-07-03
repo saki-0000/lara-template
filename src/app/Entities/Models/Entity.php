@@ -232,17 +232,17 @@ abstract class Entity extends Model implements Sluggable
         return strtolower($className);
     }
 
-    // /**
-    //  * Gets a limited-length version of the entities name.
-    //  */
-    // public function getShortName(int $length = 25): string
-    // {
-    //     if (mb_strlen($this->name) <= $length) {
-    //         return $this->name;
-    //     }
+    /**
+     * Gets a limited-length version of the entities name.
+     */
+    public function getShortName(int $length = 25): string
+    {
+        if (mb_strlen($this->name) <= $length) {
+            return $this->name;
+        }
 
-    //     return mb_substr($this->name, 0, $length - 3) . '...';
-    // }
+        return mb_substr($this->name, 0, $length - 3) . '...';
+    }
 
     // /**
     //  * Get an excerpt of this entity's descriptive content to the specified length.

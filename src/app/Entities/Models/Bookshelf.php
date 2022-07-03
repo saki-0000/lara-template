@@ -23,26 +23,26 @@ class Bookshelf extends Entity implements HasCoverImage
         'description' => '',
     ];
 
-    // /**
-    //  * Get the books in this shelf.
-    //  * Should not be used directly since does not take into account permissions.
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    //  */
-    // public function books()
-    // {
-    //     return $this->belongsToMany(Book::class, 'bookshelves_books', 'bookshelf_id', 'book_id')
-    //         ->withPivot('order')
-    //         ->orderBy('order', 'asc');
-    // }
+    /**
+     * Get the books in this shelf.
+     * Should not be used directly since does not take into account permissions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'bookshelves_books', 'bookshelf_id', 'book_id')
+            ->withPivot('order')
+            ->orderBy('order', 'asc');
+    }
 
-    // /**
-    //  * Related books that are visible to the current user.
-    //  */
-    // public function visibleBooks(): BelongsToMany
-    // {
-    //     return $this->books()->scopes('visible');
-    // }
+    /**
+     * Related books that are visible to the current user.
+     */
+    public function visibleBooks(): BelongsToMany
+    {
+        return $this->books()->scopes('visible');
+    }
 
     /**
      * Get the url for this bookshelf.

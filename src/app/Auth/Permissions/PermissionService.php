@@ -499,7 +499,6 @@ class PermissionService
             $action = $permission;
         }
 
-        $this->entityRestrictionQuery($baseQuery, $action)->dump();
         $hasAccess = $this->entityRestrictionQuery($baseQuery, $action)->count() > 0;
         $this->clean();
 

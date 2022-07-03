@@ -156,49 +156,32 @@ class RolesTest extends TestCase
         ])->assertRedirect('/shelves/test-shelf');
     }
 
-    // テストデータ（前提条件）がよくわからず一旦保留
-    // public function test_bookshelves_create_all_permissions()
-    // {
-    //     $this->checkAccessPermission('bookshelf-create-all', [
-    //         '/create-shelf',
-    //     ], [
-    //         '/shelves' => 'New Shelf',
-    //     ]);
+    public function test_bookshelves_edit_own_permission()
+    {
+        /** @var Bookshelf $otherShelf */
+        $otherShelf = Bookshelf::query()->first();
+        $ownShelf = $this->newShelf(['name' => 'test-shelf', 'slug' => 'test-shelf']);
+        $ownShelf->forceFill(['owned_by' => $this->user->id, 'updated_by' => $this->user->id])->save();
+        $this->regenEntityPermissions($ownShelf);
 
-    //     $this->post('/shelves', [
-    //         'name'        => 'test shelf',
-    //         'description' => 'shelf desc',
-    //     ])->assertRedirect('/shelves/test-shelf');
-    // }
+        $this->checkAccessPermission('bookshelf-update-own', [
+            $ownShelf->getUrl('/edit'),
+        ], [
+            $ownShelf->getUrl() => 'Edit',
+        ]);
 
-    // テストデータ（前提条件）がよくわからず一旦保留
-    // public function test_bookshelves_edit_own_permission()
-    // {
-    //     /** @var Bookshelf $otherShelf */
-    //     $otherShelf = Bookshelf::query()->first();
-    //     $ownShelf = $this->newShelf(['name' => 'test-shelf', 'slug' => 'test-shelf']);
-    //     $ownShelf->forceFill(['owned_by' => $this->user->id, 'updated_by' => $this->user->id])->save();
-    //     $this->regenEntityPermissions($ownShelf);
+        $this->get($otherShelf->getUrl())->assertElementNotContains('.action-buttons', 'Edit');
+        $this->get($otherShelf->getUrl('/edit'))->assertRedirect('/');
+    }
 
-    //     $this->checkAccessPermission('bookshelf-update-own', [
-    //         $ownShelf->getUrl('/edit'),
-    //     ], [
-    //         $ownShelf->getUrl() => 'Edit',
-    //     ]);
-
-    //     $this->get($otherShelf->getUrl())->assertElementNotContains('.action-buttons', 'Edit');
-    //     $this->get($otherShelf->getUrl('/edit'))->assertRedirect('/');
-    // }
-
-    // テストデータ（前提条件）がよくわからず一旦保留
-    // public function test_bookshelves_edit_all_permission()
-    // {
-    //     /** @var Bookshelf $otherShelf */
-    //     $otherShelf = Bookshelf::query()->first();
-    //     $this->checkAccessPermission('bookshelf-update-all', [
-    //         $otherShelf->getUrl('/edit'),
-    //     ], [
-    //         $otherShelf->getUrl() => 'Edit',
-    //     ]);
-    // }
+    public function test_bookshelves_edit_all_permission()
+    {
+        /** @var Bookshelf $otherShelf */
+        $otherShelf = Bookshelf::query()->first();
+        $this->checkAccessPermission('bookshelf-update-all', [
+            $otherShelf->getUrl('/edit'),
+        ], [
+            $otherShelf->getUrl() => 'Edit',
+        ]);
+    }
 }
