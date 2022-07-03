@@ -9,10 +9,10 @@ class UpdatePolymorphicTypes extends Migration
      * Mapping of old polymorphic types to new simpler values.
      */
     protected $changeMap = [
-        'BookStack\\Bookshelf' => 'bookshelf',
-        'BookStack\\Book'      => 'book',
-        'BookStack\\Chapter'   => 'chapter',
-        'BookStack\\Page'      => 'page',
+        'App\\Bookshelf' => 'bookshelf',
+        'App\\Book'      => 'book',
+        'App\\Chapter'   => 'chapter',
+        'App\\Page'      => 'page',
     ];
 
     /**

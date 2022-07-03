@@ -181,13 +181,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->permissions;
     }
 
-    // /**
-    //  * Clear any cached permissions on this instance.
-    //  */
-    // public function clearPermissionCache()
-    // {
-    //     $this->permissions = null;
-    // }
+    /**
+     * Clear any cached permissions on this instance.
+     */
+    public function clearPermissionCache()
+    {
+        $this->permissions = null;
+    }
 
     /**
      * Attach a role to this user.

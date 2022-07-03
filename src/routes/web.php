@@ -23,7 +23,7 @@ Route::get('/', function () {
 // Shelves
 Route::get('/create-shelf', [BookshelfController::class, 'create']);
 // Route::get('/shelves/', [BookshelfController::class, 'index']);
-// Route::post('/shelves/', [BookshelfController::class, 'store']);
+Route::post('/shelves/', [BookshelfController::class, 'store']);
 Route::get('/shelves/{slug}/edit', [BookshelfController::class, 'edit']);
 
 Route::get('/settings/roles', [RoleController::class, 'index']);

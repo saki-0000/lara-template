@@ -38,13 +38,13 @@ function user(): User
     return auth()->user() ?: User::getDefault();
 }
 
-// /**
-//  * Check if current user is a signed in user.
-//  */
-// function signedInUser(): bool
-// {
-//     return auth()->user() && !auth()->user()->isDefault();
-// }
+/**
+ * Check if current user is a signed in user.
+ */
+function signedInUser(): bool
+{
+    return auth()->user() && !auth()->user()->isDefault();
+}
 
 // /**
 //  * Check if the current user has general access.

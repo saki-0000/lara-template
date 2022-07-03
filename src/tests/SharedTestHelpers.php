@@ -2,11 +2,35 @@
 
 namespace Tests;
 
+
+
+use App\Auth\Permissions\PermissionService;
+use App\Auth\Permissions\PermissionsRepo;
+use App\Auth\Permissions\RolePermission;
 use App\Auth\Role;
 use App\Auth\User;
+use App\Entities\Models\Book;
 use App\Entities\Models\Bookshelf;
+use App\Entities\Models\Chapter;
 use App\Entities\Models\Entity;
+use App\Entities\Models\Page;
+use App\Entities\Repos\BookRepo;
 use App\Entities\Repos\BookshelfRepo;
+use App\Entities\Repos\ChapterRepo;
+use App\Entities\Repos\PageRepo;
+use App\Settings\SettingService;
+use App\Uploads\HttpFetcher;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Testing\Assert as PHPUnit;
+use Mockery;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 trait SharedTestHelpers
 {
@@ -157,16 +181,16 @@ trait SharedTestHelpers
     //     $entity->load('jointPermissions');
     // }
 
-    // /**
-    //  * Give the given user some permissions.
-    //  */
-    // protected function giveUserPermissions(User $user, array $permissions = []): void
-    // {
-    //     $newRole = $this->createNewRole($permissions);
-    //     $user->attachRole($newRole);
-    //     $user->load('roles');
-    //     $user->clearPermissionCache();
-    // }
+    /**
+     * Give the given user some permissions.
+     */
+    protected function giveUserPermissions(User $user, array $permissions = []): void
+    {
+        $newRole = $this->createNewRole($permissions);
+        $user->attachRole($newRole);
+        $user->load('roles');
+        $user->clearPermissionCache();
+    }
 
     // /**
     //  * Completely remove the given permission name from the given user.
@@ -181,17 +205,17 @@ trait SharedTestHelpers
     //     $user->clearPermissionCache();
     // }
 
-    // /**
-    //  * Create a new basic role for testing purposes.
-    //  */
-    // protected function createNewRole(array $permissions = []): Role
-    // {
-    //     $permissionRepo = app(PermissionsRepo::class);
-    //     $roleData = Role::factory()->make()->toArray();
-    //     $roleData['permissions'] = array_flip($permissions);
+    /**
+     * Create a new basic role for testing purposes.
+     */
+    protected function createNewRole(array $permissions = []): Role
+    {
+        $permissionRepo = app(PermissionsRepo::class);
+        $roleData = Role::factory()->make()->toArray();
+        $roleData['permissions'] = array_flip($permissions);
 
-    //     return $permissionRepo->saveNewRole($roleData);
-    // }
+        return $permissionRepo->saveNewRole($roleData);
+    }
 
     // /**
     //  * Create a group of entities that belong to a specific user.

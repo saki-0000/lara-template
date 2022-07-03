@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotifyException;
 use App\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -205,11 +206,11 @@ class Controller extends BaseController
     //     Activity::add($type, $detail);
     // }
 
-    // /**
-    //  * Get the validation rules for image files.
-    //  */
-    // protected function getImageValidationRules(): array
-    // {
-    //     return ['image_extension', 'mimes:jpeg,png,gif,webp', 'max:' . (config('app.upload_limit') * 1000)];
-    // }
+    /**
+     * Get the validation rules for image files.
+     */
+    protected function getImageValidationRules(): array
+    {
+        return ['image_extension', 'mimes:jpeg,png,gif,webp', 'max:' . (config('app.upload_limit') * 1000)];
+    }
 }

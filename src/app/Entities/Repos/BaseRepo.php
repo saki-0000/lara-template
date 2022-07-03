@@ -25,7 +25,6 @@ class BaseRepo
      */
     public function create(Entity $entity, array $input)
     {
-        dump($input);
         $entity->fill($input);
         $entity->forceFill([
             'created_by' => user()->id,

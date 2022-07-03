@@ -75,27 +75,27 @@ class BookshelfController extends Controller
         return view('shelves.create', ['books' => $books]);
     }
 
-    // /**
-    //  * Store a newly created bookshelf in storage.
-    //  *
-    //  * @throws ValidationException
-    //  * @throws ImageUploadException
-    //  */
-    // public function store(Request $request)
-    // {
-    //     $this->checkPermission('bookshelf-create-all');
-    //     $this->validate($request, [
-    //         'name'        => ['required', 'string', 'max:255'],
-    //         'description' => ['string', 'max:1000'],
-    //         'image'       => array_merge(['nullable'], $this->getImageValidationRules()),
-    //     ]);
+    /**
+     * Store a newly created bookshelf in storage.
+     *
+     * @throws ValidationException
+     * @throws ImageUploadException
+     */
+    public function store(Request $request)
+    {
+        $this->checkPermission('bookshelf-create-all');
+        $this->validate($request, [
+            'name'        => ['required', 'string', 'max:255'],
+            'description' => ['string', 'max:1000'],
+            // 'image'       => array_merge(['nullable'], $this->getImageValidationRules()),
+        ]);
 
-    //     $bookIds = explode(',', $request->get('books', ''));
-    //     $shelf = $this->bookshelfRepo->create($request->all(), $bookIds);
-    //     $this->bookshelfRepo->updateCoverImage($shelf, $request->file('image', null));
+        $bookIds = explode(',', $request->get('books', ''));
+        $shelf = $this->bookshelfRepo->create($request->all(), $bookIds);
+        // $this->bookshelfRepo->updateCoverImage($shelf, $request->file('image', null));
 
-    //     return redirect($shelf->getUrl());
-    // }
+        return redirect($shelf->getUrl());
+    }
 
     // /**
     //  * Display the bookshelf of the given slug.

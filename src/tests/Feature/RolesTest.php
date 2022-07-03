@@ -23,7 +23,6 @@ class RolesTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutExceptionHandling();
         $this->user = $this->getViewer();
     }
 
@@ -141,6 +140,20 @@ class RolesTest extends TestCase
         foreach ($visibles as $url => $text) {
             $this->actingAs($this->user)->get($url)->assertSee($text);
         }
+    }
+
+    public function test_bookshelves_create_all_permissions()
+    {
+        $this->checkAccessPermission('bookshelf-create-all', [
+            '/create-shelf',
+        ], [
+            '/shelves' => 'New Shelf',
+        ]);
+
+        $this->post('/shelves', [
+            'name'        => 'test shelf',
+            'description' => 'shelf desc',
+        ])->assertRedirect('/shelves/test-shelf');
     }
 
     // テストデータ（前提条件）がよくわからず一旦保留
