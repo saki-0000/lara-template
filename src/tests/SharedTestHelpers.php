@@ -4,6 +4,9 @@ namespace Tests;
 
 use App\Auth\Role;
 use App\Auth\User;
+use App\Entities\Models\Bookshelf;
+use App\Entities\Models\Entity;
+use App\Entities\Repos\BookshelfRepo;
 
 trait SharedTestHelpers
 {
@@ -73,22 +76,22 @@ trait SharedTestHelpers
     //     return User::query()->where('system_name', '=', null)->get()->last();
     // }
 
-    // /**
-    //  * Regenerate the permission for an entity.
-    //  */
-    // protected function regenEntityPermissions(Entity $entity): void
-    // {
-    //     $entity->rebuildPermissions();
-    //     $entity->load('jointPermissions');
-    // }
+    /**
+     * Regenerate the permission for an entity.
+     */
+    protected function regenEntityPermissions(Entity $entity): void
+    {
+        $entity->rebuildPermissions();
+        $entity->load('jointPermissions');
+    }
 
-    // /**
-    //  * Create and return a new bookshelf.
-    //  */
-    // public function newShelf(array $input = ['name' => 'test shelf', 'description' => 'My new test shelf']): Bookshelf
-    // {
-    //     return app(BookshelfRepo::class)->create($input, []);
-    // }
+    /**
+     * Create and return a new bookshelf.
+     */
+    public function newShelf(array $input = ['name' => 'test shelf', 'description' => 'My new test shelf']): Bookshelf
+    {
+        return app(BookshelfRepo::class)->create($input, []);
+    }
 
     // /**
     //  * Create and return a new book.

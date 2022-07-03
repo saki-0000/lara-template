@@ -19,6 +19,10 @@ class Bookshelf extends Entity implements HasCoverImage
 
     protected $hidden = ['restricted', 'image_id', 'deleted_at'];
 
+    protected $attributes = [
+        'description' => '',
+    ];
+
     // /**
     //  * Get the books in this shelf.
     //  * Should not be used directly since does not take into account permissions.

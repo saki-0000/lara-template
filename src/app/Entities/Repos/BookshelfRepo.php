@@ -82,18 +82,18 @@ class BookshelfRepo
         return $shelf;
     }
 
-    // /**
-    //  * Create a new shelf in the system.
-    //  */
-    // public function create(array $input, array $bookIds): Bookshelf
-    // {
-    //     $shelf = new Bookshelf();
-    //     $this->baseRepo->create($shelf, $input);
-    //     $this->updateBooks($shelf, $bookIds);
-    //     Activity::add(ActivityType::BOOKSHELF_CREATE, $shelf);
+    /**
+     * Create a new shelf in the system.
+     */
+    public function create(array $input, array $bookIds): Bookshelf
+    {
+        $shelf = new Bookshelf();
+        $this->baseRepo->create($shelf, $input);
+        // $this->updateBooks($shelf, $bookIds);
+        Activity::add(ActivityType::BOOKSHELF_CREATE, $shelf);
 
-    //     return $shelf;
-    // }
+        return $shelf;
+    }
 
     // /**
     //  * Update an existing shelf in the system using the given input.

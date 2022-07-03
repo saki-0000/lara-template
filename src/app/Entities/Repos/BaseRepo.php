@@ -20,27 +20,28 @@ class BaseRepo
     //     $this->imageRepo = $imageRepo;
     // }
 
-    // /**
-    //  * Create a new entity in the system.
-    //  */
-    // public function create(Entity $entity, array $input)
-    // {
-    //     $entity->fill($input);
-    //     $entity->forceFill([
-    //         'created_by' => user()->id,
-    //         'updated_by' => user()->id,
-    //         'owned_by'   => user()->id,
-    //     ]);
-    //     $entity->refreshSlug();
-    //     $entity->save();
+    /**
+     * Create a new entity in the system.
+     */
+    public function create(Entity $entity, array $input)
+    {
+        dump($input);
+        $entity->fill($input);
+        $entity->forceFill([
+            'created_by' => user()->id,
+            'updated_by' => user()->id,
+            'owned_by'   => user()->id,
+        ]);
+        $entity->refreshSlug();
+        $entity->save();
 
-    //     if (isset($input['tags'])) {
-    //         $this->tagRepo->saveTagsToEntity($entity, $input['tags']);
-    //     }
+        if (isset($input['tags'])) {
+            $this->tagRepo->saveTagsToEntity($entity, $input['tags']);
+        }
 
-    //     $entity->rebuildPermissions();
-    //     $entity->indexForSearch();
-    // }
+        $entity->rebuildPermissions();
+        // $entity->indexForSearch();
+    }
 
     // /**
     //  * Update the given entity.

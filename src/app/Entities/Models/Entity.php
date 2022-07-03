@@ -47,7 +47,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder withLastView()
  * @method static Builder withViewCount()
  */
-abstract class Entity extends Model
+abstract class Entity extends Model implements Sluggable
 // abstract class Entity extends Model implements Sluggable, Favouritable, Viewable, Deletable, Loggable
 {
     use SoftDeletes;
@@ -170,13 +170,13 @@ abstract class Entity extends Model
     //     return $orderByCreated ? $query->orderBy('created_at', 'asc') : $query;
     // }
 
-    // /**
-    //  * Get the related search terms.
-    //  */
-    // public function searchTerms(): MorphMany
-    // {
-    //     return $this->morphMany(SearchTerm::class, 'entity');
-    // }
+    /**
+     * Get the related search terms.
+     */
+    public function searchTerms(): MorphMany
+    {
+        return $this->morphMany(SearchTerm::class, 'entity');
+    }
 
     // /**
     //  * Get this entities restrictions.
@@ -280,32 +280,32 @@ abstract class Entity extends Model
     //     return null;
     // }
 
-    // /**
-    //  * Rebuild the permissions for this entity.
-    //  */
-    // public function rebuildPermissions()
-    // {
-    //     /** @noinspection PhpUnhandledExceptionInspection */
-    //     Permissions::buildJointPermissionsForEntity(clone $this);
-    // }
+    /**
+     * Rebuild the permissions for this entity.
+     */
+    public function rebuildPermissions()
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        Permissions::buildJointPermissionsForEntity(clone $this);
+    }
 
-    // /**
-    //  * Index the current entity for search.
-    //  */
-    // public function indexForSearch()
-    // {
-    //     app(SearchIndex::class)->indexEntity(clone $this);
-    // }
+    /**
+     * Index the current entity for search.
+     */
+    public function indexForSearch()
+    {
+        app(SearchIndex::class)->indexEntity(clone $this);
+    }
 
-    // /**
-    //  * {@inheritdoc}
-    //  */
-    // public function refreshSlug(): string
-    // {
-    //     $this->slug = app(SlugGenerator::class)->generate($this);
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshSlug(): string
+    {
+        $this->slug = app(SlugGenerator::class)->generate($this);
 
-    //     return $this->slug;
-    // }
+        return $this->slug;
+    }
 
     // /**
     //  * {@inheritdoc}

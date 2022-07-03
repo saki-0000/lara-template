@@ -20,7 +20,7 @@ class ActivityType
     // const BOOK_DELETE = 'book_delete';
     // const BOOK_SORT = 'book_sort';
 
-    // const BOOKSHELF_CREATE = 'bookshelf_create';
+    const BOOKSHELF_CREATE = 'bookshelf_create';
     // const BOOKSHELF_UPDATE = 'bookshelf_update';
     // const BOOKSHELF_DELETE = 'bookshelf_delete';
 

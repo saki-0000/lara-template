@@ -196,50 +196,50 @@ class PermissionService
     //     $this->createManyJointPermissions($entities->all(), $roles);
     // }
 
-    // /**
-    //  * Rebuild the entity jointPermissions for a particular entity.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // public function buildJointPermissionsForEntity(Entity $entity)
-    // {
-    //     $entities = [$entity];
-    //     if ($entity instanceof Book) {
-    //         $books = $this->bookFetchQuery()->where('id', '=', $entity->id)->get();
-    //         $this->buildJointPermissionsForBooks($books, Role::query()->get()->all(), true);
+    /**
+     * Rebuild the entity jointPermissions for a particular entity.
+     *
+     * @throws Throwable
+     */
+    public function buildJointPermissionsForEntity(Entity $entity)
+    {
+        $entities = [$entity];
+        if ($entity instanceof Book) {
+            $books = $this->bookFetchQuery()->where('id', '=', $entity->id)->get();
+            $this->buildJointPermissionsForBooks($books, Role::query()->get()->all(), true);
 
-    //         return;
-    //     }
+            return;
+        }
 
-    //     /** @var BookChild $entity */
-    //     if ($entity->book) {
-    //         $entities[] = $entity->book;
-    //     }
+        /** @var BookChild $entity */
+        if ($entity->book) {
+            $entities[] = $entity->book;
+        }
 
-    //     if ($entity instanceof Page && $entity->chapter_id) {
-    //         $entities[] = $entity->chapter;
-    //     }
+        if ($entity instanceof Page && $entity->chapter_id) {
+            $entities[] = $entity->chapter;
+        }
 
-    //     if ($entity instanceof Chapter) {
-    //         foreach ($entity->pages as $page) {
-    //             $entities[] = $page;
-    //         }
-    //     }
+        if ($entity instanceof Chapter) {
+            foreach ($entity->pages as $page) {
+                $entities[] = $page;
+            }
+        }
 
-    //     $this->buildJointPermissionsForEntities($entities);
-    // }
+        $this->buildJointPermissionsForEntities($entities);
+    }
 
-    // /**
-    //  * Rebuild the entity jointPermissions for a collection of entities.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // public function buildJointPermissionsForEntities(array $entities)
-    // {
-    //     $roles = Role::query()->get()->values()->all();
-    //     $this->deleteManyJointPermissionsForEntities($entities);
-    //     $this->createManyJointPermissions($entities, $roles);
-    // }
+    /**
+     * Rebuild the entity jointPermissions for a collection of entities.
+     *
+     * @throws Throwable
+     */
+    public function buildJointPermissionsForEntities(array $entities)
+    {
+        $roles = Role::query()->get()->values()->all();
+        $this->deleteManyJointPermissionsForEntities($entities);
+        $this->createManyJointPermissions($entities, $roles);
+    }
 
     /**
      * Build the entity jointPermissions for a particular role.

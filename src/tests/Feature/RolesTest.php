@@ -144,6 +144,25 @@ class RolesTest extends TestCase
     }
 
     // テストデータ（前提条件）がよくわからず一旦保留
+    // public function test_bookshelves_edit_own_permission()
+    // {
+    //     /** @var Bookshelf $otherShelf */
+    //     $otherShelf = Bookshelf::query()->first();
+    //     $ownShelf = $this->newShelf(['name' => 'test-shelf', 'slug' => 'test-shelf']);
+    //     $ownShelf->forceFill(['owned_by' => $this->user->id, 'updated_by' => $this->user->id])->save();
+    //     $this->regenEntityPermissions($ownShelf);
+
+    //     $this->checkAccessPermission('bookshelf-update-own', [
+    //         $ownShelf->getUrl('/edit'),
+    //     ], [
+    //         $ownShelf->getUrl() => 'Edit',
+    //     ]);
+
+    //     $this->get($otherShelf->getUrl())->assertElementNotContains('.action-buttons', 'Edit');
+    //     $this->get($otherShelf->getUrl('/edit'))->assertRedirect('/');
+    // }
+
+    // テストデータ（前提条件）がよくわからず一旦保留
     // public function test_bookshelves_edit_all_permission()
     // {
     //     /** @var Bookshelf $otherShelf */
